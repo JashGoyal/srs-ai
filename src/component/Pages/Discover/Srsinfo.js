@@ -4,7 +4,7 @@ export default function SRSOverview() {
   return (
     <div className="bg-black min-h-screen text-gray-200 flex justify-center items-center p-8">
       <div className="max-w-3xl w-full space-y-8">
-        {/* What is SRS Section */}
+
         <div className="bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-700">
           <h2 className="text-xl font-bold text-neon mb-4">🔹 What is SRS?</h2>
           <p className="mb-4">
@@ -28,7 +28,6 @@ export default function SRSOverview() {
           </p>
         </div>
 
-        {/* Objectives of SRS Section */}
         <div className="bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-700">
           <h2 className="text-xl font-bold text-neon mb-4">🔹 Objectives of SRS</h2>
           <ul className="list-disc list-inside ml-4 space-y-2">

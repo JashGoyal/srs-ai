@@ -1,4 +1,4 @@
-import SRSOverview from "./Srs";
+import SRSOverview from "./Srsinfo";
 import Syntax from "./Syntax";
 
 export default function Discover() {
