@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Toast from "../../Toast";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export default function Floatinginput() {
@@ -11,7 +10,6 @@ export default function Floatinginput() {
     const [lastScrollY, setLastScrollY] = useState(0);
     const [toast, setToast] = useState(null);
 
-    const dispatch = useDispatch();
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > lastScrollY) {

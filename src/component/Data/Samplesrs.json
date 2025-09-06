@@ -1,0 +1,282 @@
+[
+  {
+    "title": "Chatbot App",
+    "sections": [
+      {
+        "heading": "1. Introduction",
+        "content": [
+          {"subheading": "1.1 Purpose", "text": "To create an AI-powered chatbot that can interact with users, answer queries, and provide suggestions."},
+          {"subheading": "1.2 Scope", "text": "The chatbot will be available on web and mobile platforms, supporting real-time messaging."},
+          {"subheading": "1.3 Definitions, Acronyms, Abbreviations", "text": "AI: Artificial Intelligence, API: Application Programming Interface."},
+          {"subheading": "1.4 References", "text": "OpenAI API documentation, React and Node.js official guides."},
+          {"subheading": "1.5 Overview", "text": "This document describes functional and non-functional requirements, system features, and interfaces for the Chatbot App."}
+        ]
+      },
+      {
+        "heading": "2. Overall Description",
+        "content": [
+          {"subheading": "2.1 Product Perspective", "text": "The Chatbot App is a standalone system integrated with AI APIs and messaging services."},
+          {"subheading": "2.2 Product Functions", "text": "Handles user authentication, real-time chat, and AI-based responses."},
+          {"subheading": "2.3 User Characteristics", "text": "End-users with basic computer skills and internet access."},
+          {"subheading": "2.4 Constraints", "text": "Requires internet connectivity and access to OpenAI API."},
+          {"subheading": "2.5 Assumptions and Dependencies", "text": "Depends on stable API services and modern browsers."}
+        ]
+      },
+      {
+        "heading": "3. System Features",
+        "content": [
+          {"subheading": "3.1 User Authentication", "text": "Sign up, login, and profile management."},
+          {"subheading": "3.2 Messaging Interface", "text": "Send/receive messages, typing indicators, message history."},
+          {"subheading": "3.3 AI Response Generation", "text": "Generate relevant answers using AI models."}
+        ]
+      },
+      {
+        "heading": "4. External Interface Requirements",
+        "content": [
+          {"text": "User Interfaces: Web and mobile chat interface."},
+          {"text": "Hardware Interfaces: Any modern PC or mobile device."},
+          {"text": "Software Interfaces: React frontend, Node.js backend, OpenAI API."},
+          {"text": "Communication Interfaces: HTTPS requests to APIs."}
+        ]
+      },
+      {
+        "heading": "5. Non-Functional Requirements",
+        "content": [
+          {"text": "Performance: Response time under 1 second."},
+          {"text": "Security: Encrypted communication and secure user data."},
+          {"text": "Scalability: Support up to 10,000 concurrent users."}
+        ]
+      },
+      {
+        "heading": "6. Other Requirements",
+        "content": [
+          {"text": "Support for multiple languages in AI responses."}
+        ]
+      }
+    ]
+  },
+  {
+    "title": "ToDo List App",
+    "sections": [
+      {
+        "heading": "1. Introduction",
+        "content": [
+          {"subheading": "1.1 Purpose", "text": "To provide a web and mobile app for users to create, manage, and track tasks."},
+          {"subheading": "1.2 Scope", "text": "Supports task creation, categorization, and reminders."},
+          {"subheading": "1.3 Definitions, Acronyms, Abbreviations", "text": "UI: User Interface, DB: Database."},
+          {"subheading": "1.4 References", "text": "React and Node.js official documentation, PostgreSQL guides."},
+          {"subheading": "1.5 Overview", "text": "Describes functional and non-functional requirements, system features, and interfaces for the ToDo List App."}
+        ]
+      },
+      {
+        "heading": "2. Overall Description",
+        "content": [
+          {"subheading": "2.1 Product Perspective", "text": "A standalone task management system with web and mobile interfaces."},
+          {"subheading": "2.2 Product Functions", "text": "Task CRUD operations, reminders, and categorization."},
+          {"subheading": "2.3 User Characteristics", "text": "Users with basic computer skills looking to manage tasks efficiently."},
+          {"subheading": "2.4 Constraints", "text": "Requires internet connectivity for syncing tasks across devices."},
+          {"subheading": "2.5 Assumptions and Dependencies", "text": "Depends on backend server availability and database connectivity."}
+        ]
+      },
+      {
+        "heading": "3. System Features",
+        "content": [
+          {"subheading": "3.1 Task Management", "text": "Add, edit, delete, and categorize tasks."},
+          {"subheading": "3.2 Reminders & Notifications", "text": "Set task deadlines and receive alerts."},
+          {"subheading": "3.3 Multi-device Sync", "text": "Synchronize tasks across devices."}
+        ]
+      },
+      {
+        "heading": "4. External Interface Requirements",
+        "content": [
+          {"text": "User Interfaces: Web and mobile UI for task management."},
+          {"text": "Hardware Interfaces: Modern desktop and mobile devices."},
+          {"text": "Software Interfaces: React frontend, Node.js backend, PostgreSQL database."},
+          {"text": "Communication Interfaces: HTTPS requests for API calls."}
+        ]
+      },
+      {
+        "heading": "5. Non-Functional Requirements",
+        "content": [
+          {"text": "Usability: Intuitive UI and smooth navigation."},
+          {"text": "Performance: Load tasks in under 500ms."},
+          {"text": "Availability: App accessible 24/7."}
+        ]
+      },
+      {
+        "heading": "6. Other Requirements",
+        "content": [
+          {"text": "Option to export tasks as CSV or PDF."}
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Snake & Leader Game",
+    "sections": [
+      {
+        "heading": "1. Introduction",
+        "content": [
+          {"subheading": "1.1 Purpose", "text": "To create a fun Snake game with a leaderboard to track top scores."},
+          {"subheading": "1.2 Scope", "text": "Users can play the game, earn points, and compare scores with others."},
+          {"subheading": "1.3 Definitions, Acronyms, Abbreviations", "text": "UI: User Interface, DB: Database."},
+          {"subheading": "1.4 References", "text": "JavaScript game development tutorials, Firebase documentation."},
+          {"subheading": "1.5 Overview", "text": "Covers functional requirements, system features, and leaderboard integration."}
+        ]
+      },
+      {
+        "heading": "2. Overall Description",
+        "content": [
+          {"subheading": "2.1 Product Perspective", "text": "A standalone web-based game with online leaderboard integration."},
+          {"subheading": "2.2 Product Functions", "text": "Game mechanics, scoring, and leaderboard tracking."},
+          {"subheading": "2.3 User Characteristics", "text": "Players of all ages with basic keyboard/mouse skills."},
+          {"subheading": "2.4 Constraints", "text": "Runs in modern browsers, requires stable internet for leaderboard."},
+          {"subheading": "2.5 Assumptions and Dependencies", "text": "Depends on server or cloud database for storing scores."}
+        ]
+      },
+      {
+        "heading": "3. System Features",
+        "content": [
+          {"subheading": "3.1 Game Mechanics", "text": "Snake movement, collision detection, score calculation."},
+          {"subheading": "3.2 Leaderboard", "text": "Record and display top player scores."},
+          {"subheading": "3.3 User Interaction", "text": "Keyboard controls, start/pause, and restart features."}
+        ]
+      },
+      {
+        "heading": "4. External Interface Requirements",
+        "content": [
+          {"text": "User Interfaces: Game canvas and leaderboard display."},
+          {"text": "Hardware Interfaces: PC or mobile devices with keyboard/touch support."},
+          {"text": "Software Interfaces: HTML5 Canvas, JavaScript, Firebase database."},
+          {"text": "Communication Interfaces: API calls to leaderboard server."}
+        ]
+      },
+      {
+        "heading": "5. Non-Functional Requirements",
+        "content": [
+          {"text": "Performance: Smooth frame rate at 60 FPS."},
+          {"text": "Reliability: Accurate scoring and leaderboard updates."},
+          {"text": "Security: Prevent score tampering."}
+        ]
+      },
+      {
+        "heading": "6. Other Requirements",
+        "content": [
+          {"text": "Option to reset leaderboard or filter top scores by time."}
+        ]
+      }
+    ]
+  },
+  {
+    "title": "AI Text Generator",
+    "sections": [
+      {
+        "heading": "1. Introduction",
+        "content": [
+          {"subheading": "1.1 Purpose", "text": "To build an AI-powered text generation tool for creative and professional writing."},
+          {"subheading": "1.2 Scope", "text": "Supports prompts, customizable styles, and export options."},
+          {"subheading": "1.3 Definitions, Acronyms, Abbreviations", "text": "AI: Artificial Intelligence, API: Application Programming Interface."},
+          {"subheading": "1.4 References", "text": "OpenAI API documentation, React and Node.js official guides."},
+          {"subheading": "1.5 Overview", "text": "Covers functional requirements, system features, and AI model integration."}
+        ]
+      },
+      {
+        "heading": "2. Overall Description",
+        "content": [
+          {"subheading": "2.1 Product Perspective", "text": "Web-based tool integrated with AI APIs for text generation."},
+          {"subheading": "2.2 Product Functions", "text": "Generate, edit, and save AI-generated text."},
+          {"subheading": "2.3 User Characteristics", "text": "Users needing writing assistance, content creators, students, and professionals."},
+          {"subheading": "2.4 Constraints", "text": "Requires stable internet and API access."},
+          {"subheading": "2.5 Assumptions and Dependencies", "text": "Depends on AI API uptime and modern browsers."}
+        ]
+      },
+      {
+        "heading": "3. System Features",
+        "content": [
+          {"subheading": "3.1 Text Generation", "text": "Input prompt and generate AI text output."},
+          {"subheading": "3.2 Style Customization", "text": "Select tone, style, and length of generated content."},
+          {"subheading": "3.3 Export Options", "text": "Export text as TXT, PDF, or copy to clipboard."}
+        ]
+      },
+      {
+        "heading": "4. External Interface Requirements",
+        "content": [
+          {"text": "User Interfaces: Web UI with input and output sections."},
+          {"text": "Hardware Interfaces: Modern desktops and mobile devices."},
+          {"text": "Software Interfaces: React frontend, Node.js backend, OpenAI API."},
+          {"text": "Communication Interfaces: HTTPS requests to AI API endpoints."}
+        ]
+      },
+      {
+        "heading": "5. Non-Functional Requirements",
+        "content": [
+          {"text": "Performance: Response under 2 seconds per request."},
+          {"text": "Security: Secure API keys and user data privacy."},
+          {"text": "Scalability: Handle multiple concurrent users generating text."}
+        ]
+      },
+      {
+        "heading": "6. Other Requirements",
+        "content": [
+          {"text": "Option to save favorite generated texts for reuse."}
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Leaderboard Game",
+    "sections": [
+      {
+        "heading": "1. Introduction",
+        "content": [
+          {"subheading": "1.1 Purpose", "text": "To provide a competitive game where players can track their rankings on a leaderboard."},
+          {"subheading": "1.2 Scope", "text": "Supports multiple mini-games, scoring, and leaderboard tracking."},
+          {"subheading": "1.3 Definitions, Acronyms, Abbreviations", "text": "DB: Database, API: Application Programming Interface."},
+          {"subheading": "1.4 References", "text": "Game development tutorials, Firebase documentation."},
+          {"subheading": "1.5 Overview", "text": "Covers functional and non-functional requirements, system features, and leaderboard integration."}
+        ]
+      },
+      {
+        "heading": "2. Overall Description",
+        "content": [
+          {"subheading": "2.1 Product Perspective", "text": "A web-based gaming platform with leaderboard support."},
+          {"subheading": "2.2 Product Functions", "text": "Track scores, display leaderboard, and provide game statistics."},
+          {"subheading": "2.3 User Characteristics", "text": "Gamers of all ages, internet-enabled devices."},
+          {"subheading": "2.4 Constraints", "text": "Requires internet for leaderboard updates."},
+          {"subheading": "2.5 Assumptions and Dependencies", "text": "Depends on backend server and database for score management."}
+        ]
+      },
+      {
+        "heading": "3. System Features",
+        "content": [
+          {"subheading": "3.1 Score Tracking", "text": "Record player scores for each game session."},
+          {"subheading": "3.2 Leaderboard Display", "text": "Display top players and rankings."},
+          {"subheading": "3.3 Game Interface", "text": "User-friendly interface for multiple mini-games."}
+        ]
+      },
+      {
+        "heading": "4. External Interface Requirements",
+        "content": [
+          {"text": "User Interfaces: Web interface for games and leaderboard."},
+          {"text": "Hardware Interfaces: Desktop and mobile devices."},
+          {"text": "Software Interfaces: React frontend, Node.js backend, Firebase database."},
+          {"text": "Communication Interfaces: API calls to leaderboard server."}
+        ]
+      },
+      {
+        "heading": "5. Non-Functional Requirements",
+        "content": [
+          {"text": "Performance: Leaderboard updates in under 1 second."},
+          {"text": "Reliability: Accurate and tamper-proof scoring."},
+          {"text": "Availability: 24/7 access to game and leaderboard."}
+        ]
+      },
+      {
+        "heading": "6. Other Requirements",
+        "content": [
+          {"text": "Option to reset leaderboard weekly or monthly."}
+        ]
+      }
+    ]
+  }
+]

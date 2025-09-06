@@ -1,4 +1,4 @@
-import Historyhome from "./History/Historyhome";
+import Historyhome from "./History/HistoryHome";
 import Floatinginput from "./Home/Floatinginput";
 import Landing from "./Home/Landing";
 
