@@ -9,7 +9,7 @@ export default function Landing() {
                     Introducing SRSense
                 </h1>
                 <div className="flex justify-center flex-wrap gap-4 mb-16">
-                    <button className="bg-neon text-black px-6 py-3 rounded-full font-semibold hover:bg-gray-200 transition flex items-center gap-2">
+                    <button className="bg-neon text-black px-6 py-3 rounded-full font-semibold hover:bg-gray-200 transition flex items-center gap-2" onClick={() => navigate("/chat")}>
                         Try SRSense
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

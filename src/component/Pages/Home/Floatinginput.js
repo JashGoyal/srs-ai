@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
 import Toast from "../../Toast";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function Floatinginput() {
+    const navigate = useNavigate();
     const [inputValue, setInputValue] = useState("");
     const [isFocused, setIsFocused] = useState(false);
     const [showUI, setShowUI] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
     const [toast, setToast] = useState(null);
 
+    const dispatch = useDispatch();
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > lastScrollY) {
@@ -23,14 +27,24 @@ export default function Floatinginput() {
     }, [lastScrollY]);
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        if (inputValue.trim() === "") {
-            setToast({ message: "⚠️ Input field is empty", type: "error" });
-            return;
-        }
-        setToast({ message: "✅ Redirecting to chat...", type: "success" });
-        setTimeout(() => (window.location.href = "/chat"), 1500);
-    };
+    e.preventDefault();
+
+    if (inputValue.trim() === "") {
+        setToast({ message: "⚠️ Input field is empty", type: "error" });
+        return;
+    }
+
+    console.log("Dispatching:", inputValue);
+
+    setToast({ message: "✅ Redirecting to chat...", type: "success" });
+
+    setInputValue("");
+
+    setTimeout(() => {
+       navigate("/chat", { state: { message: inputValue } });
+    }, 1500);
+};
+
 
     const handleInput = (e) => {
         e.target.style.height = "auto";
