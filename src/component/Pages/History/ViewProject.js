@@ -9,15 +9,13 @@ export default function ViewProject({ project, setShow }) {
     const container = containerRef.current;
 
     const handleScroll = () => {
-      if (isScrollingRef.current) return; // ignore while programmatically scrolling
+      if (isScrollingRef.current) return;
 
-      // Check if scrolled to bottom
       if (container.scrollTop + container.clientHeight >= container.scrollHeight - 1) {
         setActiveSection(project.sections.length - 1);
         return;
       }
 
-      // Find closest section to top
       let closestIndex = 0;
       let minDistance = Infinity;
 
@@ -49,7 +47,7 @@ export default function ViewProject({ project, setShow }) {
       setActiveSection(i);
       setTimeout(() => {
         isScrollingRef.current = false;
-      }, 500); // matches scroll animation duration
+      }, 500);
     }
   };
 
@@ -57,7 +55,6 @@ export default function ViewProject({ project, setShow }) {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-2xl shadow-lg max-w-4xl w-full max-h-[85vh] overflow-hidden flex relative">
         
-        {/* Sidebar */}
         <aside className="w-1/4 bg-gray-300 border-r p-4 overflow-y-auto rounded-l-2xl">
           <h2 className="text-xl font-bold text-gray-800 mb-4">{project.title}</h2>
           <ul className="space-y-2 text-sm">
@@ -77,7 +74,6 @@ export default function ViewProject({ project, setShow }) {
           </ul>
         </aside>
 
-        {/* Main Content */}
         <main
           ref={containerRef}
           id="project-content"

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addMessage, updateMessage } from "../../../redux/features/Chatslice";
+import { generateSrs } from "../../../redux/features/srsSlice"; // import your thunk
 import Toast from "../../Toast";
 import { useLocation } from "react-router-dom";
 
@@ -10,7 +11,7 @@ export default function Chat() {
 
     const [inputValue, setInputValue] = useState("");
     const [toast, setToast] = useState(null);
-    const [loading, setLoading] = useState(false); // NEW
+    const [loading, setLoading] = useState(false);
     const messagesEndRef = useRef(null);
     const textareaRef = useRef(null);
     const location = useLocation();
@@ -42,22 +43,32 @@ export default function Chat() {
         );
 
         if (unRepliedMessages.length === 0) {
-            setLoading(false); 
+            setLoading(false);
             return;
         }
 
         unRepliedMessages.forEach((msg) => {
-            setLoading(true); 
-            setTimeout(() => {
-                dispatch(
-                    addMessage({
+            setLoading(true);
+
+            dispatch(generateSrs(msg.text))
+                .unwrap()
+                .then((response) => {
+                    const aiText = response?.srsData?.aiResponse || response?.srsData?.error || "⚠️ No AI response";
+
+                    dispatch(addMessage({
                         sender: "ai",
-                        text: ` ${msg.text}`,
-                    })
-                );
-                dispatch(updateMessage({ ...msg, replied: true }));
-                setLoading(false);
-            }, 1000);
+                        text: aiText,
+                        replied: true,
+                    }));
+
+                    dispatch(updateMessage({ ...msg, replied: true }));
+                })
+                .catch((error) => {
+                    setToast({ message: error || "Failed to get AI response", type: "error" });
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
         });
     }, [messages, dispatch]);
 
@@ -86,6 +97,8 @@ export default function Chat() {
         e.target.style.height = `${e.target.scrollHeight}px`;
         scrollToBottom();
     };
+
+    console.log(messages)
 
     return (
         <div className="flex flex-col h-screen bg-black text-white pt-24 items-center">

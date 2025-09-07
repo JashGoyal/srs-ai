@@ -1,16 +1,80 @@
-import React from "react";
-import data from "../../Data/Samplesrs.json"; 
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSrsHistory } from "../../../redux/features/GetHistory";
+import { deleteSrsById } from "../../../redux/features/deleteSrsSlice.js";
 import HistoryCard from "./Historycard";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import Toast from "../../Toast.js";
+
 
 export default function Historyhome() {
+  const dispatch = useDispatch();
+  const { items: srsList, loading, error } = useSelector((state) => state.srsHistory);
+  const { successMessage, errorMessage } = useSelector((state) => state.deleteSrs);
+
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    dispatch(fetchSrsHistory());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (successMessage) {
+      setToast({ message: successMessage, type: "success" });
+      dispatch(fetchSrsHistory());
+    }
+    if (errorMessage) {
+      setToast({ message: errorMessage, type: "error" });
+    }
+  }, [successMessage, errorMessage, dispatch]);
+
+  const handleDelete = (id) => {
+    confirmAlert({
+      title: "Confirm Deletion",
+      message: "Are you sure you want to delete this SRS document?",
+      buttons: [
+        {
+          label: "Yes, Delete",
+          onClick: () => dispatch(deleteSrsById(id)),
+        },
+        {
+          label: "Cancel",
+        },
+      ],
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-black p-8 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {data.map((project, index) => (
-        <HistoryCard
-          key={index}
-          project={project}
+    <div className="min-h-screen bg-black p-8">
+      {loading && <p className="text-white">Loading...</p>}
+      {error && <p className="text-red-500">Error: {error}</p>}
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
         />
-      ))}
+      )}
+
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {srsList.map((doc, index) => {
+          const project = {
+            ...doc.aiResponse,
+            id: doc.id,
+          };
+
+          return (
+            <HistoryCard
+              key={doc.id || index}
+              project={project}
+              onDelete={() => handleDelete(doc.id)}
+              date={doc.createdAt}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
