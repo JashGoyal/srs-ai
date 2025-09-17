@@ -17,97 +17,97 @@ export default function HistoryCard({ project, onDelete, date }) {
         : "N/A";
 
     const handleDownload = () => {
-    const doc = new jsPDF();
-    const pageHeight = doc.internal.pageSize.height;
-    const pageWidth = doc.internal.pageSize.width;
-    const margin = 20;
-    const footerHeight = 20;
-    const maxTextWidth = pageWidth - margin * 2;
+        const doc = new jsPDF();
+        const pageHeight = doc.internal.pageSize.height;
+        const pageWidth = doc.internal.pageSize.width;
+        const margin = 20;
+        const footerHeight = 20;
+        const maxTextWidth = pageWidth - margin * 2;
 
-    let fontSize = 50;
-    doc.setFont("helvetica", "bold");
-
-    const getWrappedLines = (text, size) => {
-        doc.setFontSize(size);
-        return doc.splitTextToSize(text, maxTextWidth);
-    };
-
-    let titleLines = getWrappedLines(project.title, fontSize);
-    while (titleLines.length > 3 && fontSize > 20) {
-        fontSize -= 2;
-        titleLines = getWrappedLines(project.title, fontSize);
-    }
-
-    const lineHeight = fontSize * 1.2;
-    const textHeight = titleLines.length * lineHeight;
-
-    const startY = (pageHeight - footerHeight - textHeight) / 2;
-
-    doc.setFontSize(fontSize);
-    titleLines.forEach((line, i) => {
-        doc.text(line, pageWidth / 2, startY + i * lineHeight, { align: "center" });
-    });
-
-    doc.addPage();
-
-    let y = margin;
-
-    project.sections.forEach((section) => {
-        doc.setFontSize(16);
+        let fontSize = 50;
         doc.setFont("helvetica", "bold");
-        const splitHeading = doc.splitTextToSize(section.heading, maxTextWidth);
-        if (y + splitHeading.length * 7 > pageHeight - footerHeight - margin) {
-            doc.addPage();
-            y = margin;
+
+        const getWrappedLines = (text, size) => {
+            doc.setFontSize(size);
+            return doc.splitTextToSize(text, maxTextWidth);
+        };
+
+        let titleLines = getWrappedLines(project.title, fontSize);
+        while (titleLines.length > 3 && fontSize > 20) {
+            fontSize -= 2;
+            titleLines = getWrappedLines(project.title, fontSize);
         }
-        doc.text(splitHeading, margin, y);
-        y += splitHeading.length * 7 + 5;
 
-        section.content.forEach(c => {
-            if (c.subheading) {
-                doc.setFontSize(14);
-                doc.setFont("helvetica", "bold");
-                const splitSub = doc.splitTextToSize(c.subheading, maxTextWidth);
-                if (y + splitSub.length * 7 > pageHeight - footerHeight - margin) {
-                    doc.addPage();
-                    y = margin;
-                }
-                doc.text(splitSub, margin, y);
-                y += splitSub.length * 7 + 3;
-            }
+        const lineHeight = fontSize * 1.2;
+        const textHeight = titleLines.length * lineHeight;
 
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "normal");
-            const splitText = doc.splitTextToSize(c.text, maxTextWidth);
-            if (y + splitText.length * 7 > pageHeight - footerHeight - margin) {
+        const startY = (pageHeight - footerHeight - textHeight) / 2;
+
+        doc.setFontSize(fontSize);
+        titleLines.forEach((line, i) => {
+            doc.text(line, pageWidth / 2, startY + i * lineHeight, { align: "center" });
+        });
+
+        doc.addPage();
+
+        let y = margin;
+
+        project.sections.forEach((section) => {
+            doc.setFontSize(16);
+            doc.setFont("helvetica", "bold");
+            const splitHeading = doc.splitTextToSize(section.heading, maxTextWidth);
+            if (y + splitHeading.length * 7 > pageHeight - footerHeight - margin) {
                 doc.addPage();
                 y = margin;
             }
-            doc.text(splitText, margin, y);
-            y += splitText.length * 7 + 5;
+            doc.text(splitHeading, margin, y);
+            y += splitHeading.length * 7 + 5;
+
+            section.content.forEach(c => {
+                if (c.subheading) {
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    const splitSub = doc.splitTextToSize(c.subheading, maxTextWidth);
+                    if (y + splitSub.length * 7 > pageHeight - footerHeight - margin) {
+                        doc.addPage();
+                        y = margin;
+                    }
+                    doc.text(splitSub, margin, y);
+                    y += splitSub.length * 7 + 3;
+                }
+
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "normal");
+                const splitText = doc.splitTextToSize(c.text, maxTextWidth);
+                if (y + splitText.length * 7 > pageHeight - footerHeight - margin) {
+                    doc.addPage();
+                    y = margin;
+                }
+                doc.text(splitText, margin, y);
+                y += splitText.length * 7 + 5;
+            });
+
+            y += 5;
         });
 
-        y += 5;
-    });
+        const totalPages = doc.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+            doc.setPage(i);
 
-    const totalPages = doc.getNumberOfPages();
-    for (let i = 1; i <= totalPages; i++) {
-        doc.setPage(i);
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            const topRightText = "This SRS PDF is generated by SRSense";
+            const topRightX = pageWidth - margin;
+            const topRightY = margin / 2 + 2;
+            doc.text(topRightText, topRightX, topRightY, { align: "right" });
 
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "normal");
-        const topRightText = "This SRS PDF is generated by SRSense";
-        const topRightX = pageWidth - margin;
-        const topRightY = margin / 2 + 2; 
-        doc.text(topRightText, topRightX, topRightY, { align: "right" });
+            const footerY = pageHeight - footerHeight / 2;
+            doc.text(project.title, margin, footerY);
+            doc.text(`${i} of ${totalPages}`, pageWidth - margin, footerY, { align: "right" });
+        }
 
-        const footerY = pageHeight - footerHeight / 2; 
-        doc.text(project.title, margin, footerY);
-        doc.text(`${i} of ${totalPages}`, pageWidth - margin, footerY, { align: "right" });
-    }
-
-    doc.save(`${project.title}.pdf`);
-};
+        doc.save(`${project.title}.pdf`);
+    };
 
 
     return (
@@ -132,7 +132,7 @@ export default function HistoryCard({ project, onDelete, date }) {
 
                 <p className="text-sm text-gray-600 line-clamp-3 mb-3">
                     {
-                        project.sections.find(sec => sec.heading === "1. Introduction")
+                        project.sections?.find(sec => sec.heading === "1. Introduction")
                             ?.content.find(item => item.subheading === "1.1 Purpose")?.text
                     }
                 </p>
@@ -140,7 +140,7 @@ export default function HistoryCard({ project, onDelete, date }) {
                 <div className="bg-gray-100 rounded-lg p-3 border text-sm mb-4">
                     <p className="text-xs text-gray-500 font-semibold mb-1">✨ Key Feature:</p>
                     <p className="text-gray-700">
-                        {project.sections.find(sec => sec.heading === "3. System Features")
+                        {project.sections?.find(sec => sec.heading === "3. System Features")
                             ?.content[0]?.text}
                     </p>
                 </div>

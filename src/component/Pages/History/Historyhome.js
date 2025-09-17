@@ -7,11 +7,13 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import Toast from "../../Toast.js";
 import Loader from "../../Loader.js";
+import { useNavigate } from "react-router-dom";
 
 export default function HistoryHome() {
   const dispatch = useDispatch();
   const { items: srsList, loading, error } = useSelector((state) => state.srsHistory);
   const { successMessage, errorMessage } = useSelector((state) => state.deleteSrs);
+  const navigate = useNavigate();
 
   const [toast, setToast] = useState(null);
 
@@ -70,7 +72,15 @@ export default function HistoryHome() {
       )}
 
       <h2 className="text-5xl sm:text-4xl font-bold text-white mb-8 text-center">
-        Previously Generated SRS
+        Previously{" "}
+        <span
+          onClick={() => navigate("/history")}
+          className="text-neon cursor-pointer hover:underline"
+          title="Go to History"
+        >
+          Generated
+        </span>{" "}
+        SRS
       </h2>
 
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 max-w-7xl w-full justify-items-center">
