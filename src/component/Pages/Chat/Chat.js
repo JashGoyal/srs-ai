@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addMessage, updateMessage } from "../../../redux/features/Chatslice";
-import { generateSrs } from "../../../redux/features/srsSlice"; // import your thunk
+import { generateSrs } from "../../../redux/features/srsSlice";
 import Toast from "../../Toast";
 import { useLocation } from "react-router-dom";
 

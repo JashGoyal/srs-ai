@@ -6,6 +6,7 @@ import HistoryCard from "./Historycard";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import Toast from "../../Toast.js";
+import Loader from "../../Loader.js";
 
 
 export default function Historyhome() {
@@ -32,7 +33,7 @@ export default function Historyhome() {
   const handleDelete = (id) => {
     confirmAlert({
       title: "Confirm Deletion",
-      message: "Are you sure you want to delete this SRS document?",
+      message: "Are you sure you want to delete this SRS document? ",
       buttons: [
         {
           label: "Yes, Delete",
@@ -45,10 +46,22 @@ export default function Historyhome() {
     });
   };
 
+  useEffect(() => {
+    if (error) {
+      setToast({ message: error, type: "error" });
+
+      const timeout = setTimeout(() => {
+        setToast(null);
+      }, 3000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [error]);
+
+
   return (
     <div className="min-h-screen bg-black p-8">
-      {loading && <p className="text-white">Loading...</p>}
-      {error && <p className="text-red-500">Error: {error}</p>}
+      {loading && <Loader />}
 
       {toast && (
         <Toast
