@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { nanoid } from "nanoid";
 
 const chatSlice = createSlice({
   name: "chat",
@@ -6,15 +7,25 @@ const chatSlice = createSlice({
     messages: [],
   },
   reducers: {
-    addMessage: (state, action) => {
-      state.messages.push(action.payload);
+    addMessage: {
+      reducer: (state, action) => {
+        state.messages.push(action.payload);
+      },
+      prepare: (message) => {
+        // Attach a unique id to each message automatically
+        return {
+          payload: {
+            id: nanoid(),
+            ...message,
+          },
+        };
+      },
     },
     updateMessage: (state, action) => {
-      const index = state.messages.findIndex(
-        (msg) => msg.sender === action.payload.sender && msg.text === action.payload.text && msg.replied === false
-      );
+      const { id, ...updates } = action.payload;
+      const index = state.messages.findIndex((msg) => msg.id === id);
       if (index !== -1) {
-        state.messages[index] = { ...state.messages[index], ...action.payload };
+        state.messages[index] = { ...state.messages[index], ...updates };
       }
     },
   },

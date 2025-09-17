@@ -3,27 +3,34 @@ import { useSelector, useDispatch } from "react-redux";
 import { addMessage, updateMessage } from "../../../redux/features/Chatslice";
 import { generateSrs } from "../../../redux/features/srsSlice";
 import Toast from "../../Toast";
-import { useLocation } from "react-router-dom";
 
 export default function Chat() {
     const messages = useSelector((state) => state.chat.messages);
     const dispatch = useDispatch();
-
     const [inputValue, setInputValue] = useState("");
     const [toast, setToast] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [hasSentMessage, setHasSentMessage] = useState(false);
     const messagesEndRef = useRef(null);
     const textareaRef = useRef(null);
-    const location = useLocation();
-    const messageFromPrevious = location.state?.message;
+
+    const noMessages = messages.length === 0;
+
+    const typeMessage = (fullText, messageId) => {
+        let index = 0;
+        const interval = setInterval(() => {
+            if (index <= fullText.length) {
+                const partialText = fullText.slice(0, index);
+                dispatch(updateMessage({ id: messageId, text: partialText }));
+                index++;
+            } else {
+                clearInterval(interval);
+                dispatch(updateMessage({ id: messageId, loading: false })); 
+            }
+        }, 30);
+    };
 
     useEffect(() => {
-        if (messageFromPrevious) {
-            dispatch(addMessage({ sender: "user", text: messageFromPrevious, replied: false }));
-        }
-    }, [messageFromPrevious, dispatch]);
-
-    const scrollToBottom = () => {
         if (messagesEndRef.current) {
             const container = messagesEndRef.current.parentNode;
             container.scrollTo({
@@ -31,10 +38,6 @@ export default function Chat() {
                 behavior: "smooth",
             });
         }
-    };
-
-    useEffect(() => {
-        scrollToBottom();
     }, [messages]);
 
     useEffect(() => {
@@ -53,18 +56,34 @@ export default function Chat() {
             dispatch(generateSrs(msg.text))
                 .unwrap()
                 .then((response) => {
-                    const aiText = response?.srsData?.aiResponse || response?.srsData?.error || "⚠️ No AI response";
+                    const isError = response?.status === "error";
+                    const aiText = isError
+                        ? `${response?.srsData?.error || "Unknown error occurred"}`
+                        : response?.srsData?.aiResponse || "⚠️ No AI response";
 
-                    dispatch(addMessage({
-                        sender: "ai",
-                        text: aiText,
-                        replied: true,
-                    }));
+                    const aiMessageId = `ai-${Date.now()}`;
 
-                    dispatch(updateMessage({ ...msg, replied: true }));
+                    dispatch(
+                        addMessage({
+                            sender: "ai",
+                            text: "",
+                            replied: true,
+                            id: aiMessageId,
+                            loading: true,
+                        })
+                    );
+
+                    setTimeout(() => {
+                        typeMessage(aiText, aiMessageId);
+                    }, 100);
+
+                    dispatch(updateMessage({ id: msg.id, replied: true }));
                 })
                 .catch((error) => {
-                    setToast({ message: error || "Failed to get AI response", type: "error" });
+                    setToast({
+                        message: error?.message || "Failed to get AI response",
+                        type: "error",
+                    });
                 })
                 .finally(() => {
                     setLoading(false);
@@ -85,6 +104,7 @@ export default function Chat() {
         dispatch(addMessage({ sender: "user", text, replied: false }));
         setInputValue("");
         if (textareaRef.current) textareaRef.current.style.height = "auto";
+        setHasSentMessage(true);
     };
 
     const handleSubmit = (e) => {
@@ -93,34 +113,133 @@ export default function Chat() {
     };
 
     const handleInput = (e) => {
-        e.target.style.height = "auto";
-        e.target.style.height = `${e.target.scrollHeight}px`;
-        scrollToBottom();
+        const textarea = e.target;
+        textarea.style.height = "auto";
+
+        const maxHeight = 200;
+        const scrollHeight = textarea.scrollHeight;
+
+        if (scrollHeight <= maxHeight) {
+            textarea.style.overflowY = "hidden";
+            textarea.style.height = scrollHeight + "px";
+        } else {
+            textarea.style.overflowY = "auto";
+            textarea.style.height = maxHeight + "px";
+        }
     };
 
-    console.log(messages)
+    const inputForm = (
+        <form onSubmit={handleSubmit} className="relative flex justify-center w-full max-w-2xl">
+            <div className="relative bg-gray-800/90 backdrop-blur-md text-neon rounded-3xl border border-gray-600 shadow-lg flex items-center px-4 py-2 w-full">
+                <textarea
+                    ref={textareaRef}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onInput={handleInput}
+                    placeholder="Type your Topic..."
+                    rows={1}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            handleSubmit(e);
+                        }
+                    }}
+                    className="bg-transparent w-full resize-none max-h-[200px] overflow-y-auto pl-4 pr-10 py-2 text-white placeholder-neon outline-none rounded-3xl scrollbar-dark"
+                />
+
+                <button
+                    type="submit"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 flex items-center justify-center shadow-md hover:scale-110 transition-transform duration-300"
+                    aria-label="Send"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="currentColor"
+                        className="w-5 h-5 text-gray-800"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 18.75 7.5-7.5 7.5 7.5" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 7.5-7.5 7.5 7.5" />
+                    </svg>
+                </button>
+            </div>
+        </form>
+    );
 
     return (
-        <div className="flex flex-col h-screen bg-black text-white pt-24 items-center">
-
-            <div
-                className="flex-1 overflow-y-auto scrollbar-dark p-6 flex flex-col gap-3 w-full max-w-2xl"
-                style={{ paddingBottom: '200px' }}
-            >
-                {messages.map((msg, idx) => (
-                    <div
-                        key={idx}
-                        className={`max-w-[70%] px-4 py-2 rounded-2xl break-words
-                            ${msg.sender === "user"
-                                ? "self-end [&::first-letter]:uppercase bg-white text-black text-right"
-                                : "self-start [&::first-letter]:uppercase text-white text-left"
-                            }`}
+        <div
+            className={`flex flex-col h-screen bg-black text-white transition-all duration-500
+      ${noMessages ? "justify-center" : "pt-4"}`}
+        >
+            {noMessages && (
+                <div className="flex flex-col items-center justify-center flex-grow px-4">
+                    <h1
+                        className={`text-4xl font-bold text-white mb-6 text-center
+                                  transition-opacity duration-[2000ms] ease-in-out
+                                  ${hasSentMessage ? "opacity-0" : "opacity-100"}`}
                     >
-                        {msg.text}
+                        Generate your SRS
+                    </h1>
+
+                    <div
+                        className={`w-full max-w-2xl flex justify-center
+                                  transition-transform duration-[5000ms] ease-in-out
+                                  ${hasSentMessage
+                                ? "fixed bottom-6 left-1/2 transform -translate-x-1/2 translate-y-0"
+                                : "relative translate-x-0 translate-y-0"
+                            }
+  `}
+                    >
+                        {inputForm}
                     </div>
-                ))}
-                <div ref={messagesEndRef} />
-            </div>
+                </div>
+            )}
+
+            {!noMessages && (
+                <>
+                    <div
+                        className="overflow-y-auto scrollbar-dark p-6 flex flex-col gap-3 w-full mx-auto"
+                        style={{ paddingBottom: "200px" }}
+                    >
+                        <div className="w-full max-w-2xl mx-auto px-4 flex flex-col gap-2">
+                            {messages.map((msg, idx) => (
+                                <div
+                                    key={msg.id || idx}
+                                    className={`flex w-full ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                                >
+                                    <div
+                                        className={`px-4 py-2 rounded-2xl break-words whitespace-pre-wrap
+                      ${msg.sender === "user"
+                                                ? "bg-white text-black text-right max-w-[60%] ml-auto"
+                                                : "bg-black text-white text-left w-full"
+                                            }`}
+                                    >
+                                        {msg.loading ? (
+                                            <div className="flex items-center gap-1">
+                                                <span className="w-3 h-3 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                                                <span className="w-3 h-3 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "100ms" }} />
+                                                <span className="w-3 h-3 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "200ms" }} />
+                                            </div>
+                                        ) : (
+                                            msg.text
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    <div
+                        className={`w-full flex justify-center z-50 fixed bottom-6 left-1/2 transform -translate-x-1/2`}
+                        style={{ maxWidth: "600px", padding: "0 16px" }}
+                    >
+                        {inputForm}
+                    </div>
+                </>
+            )}
 
             {toast && (
                 <Toast
@@ -130,56 +249,6 @@ export default function Chat() {
                     onClose={() => setToast(null)}
                 />
             )}
-
-            <div className="fixed bottom-6 w-full flex justify-center z-50">
-                <form
-                    onSubmit={handleSubmit}
-                    className="relative flex justify-center w-full max-w-2xl"
-                >
-                    <div className="relative bg-gray-800/90 backdrop-blur-md text-neon rounded-3xl border border-gray-600 shadow-lg flex items-center px-4 py-2 w-full">
-                        <textarea
-                            ref={textareaRef}
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onInput={handleInput}
-                            placeholder="Type your message..."
-                            rows={1}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter" && !e.shiftKey) {
-                                    e.preventDefault();
-                                    handleSubmit(e);
-                                }
-                            }}
-                            className="bg-transparent w-full resize-none overflow-y-hidden pl-4 pr-10 py-2 text-white placeholder-neon outline-none rounded-3xl"
-                        />
-
-                        <button
-                            type="submit"
-                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 flex items-center justify-center shadow-md hover:scale-110 transition-transform duration-300"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={2}
-                                stroke="currentColor"
-                                className="w-5 h-5 text-gray-800"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="m4.5 18.75 7.5-7.5 7.5 7.5"
-                                />
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="m4.5 12.75 7.5-7.5 7.5 7.5"
-                                />
-                            </svg>
-                        </button>
-                    </div>
-                </form>
-            </div>
         </div>
     );
 }

@@ -9,7 +9,7 @@ import Toast from "../../Toast.js";
 import Loader from "../../Loader.js";
 
 
-export default function Historyhome() {
+export default function HistoryHome() {
   const dispatch = useDispatch();
   const { items: srsList, loading, error } = useSelector((state) => state.srsHistory);
   const { successMessage, errorMessage } = useSelector((state) => state.deleteSrs);

@@ -46,11 +46,15 @@ export default function Landing() {
                     </button>
                 </div>
             </div>
-            <div className="max-w-2xl mx-auto text-center mt-10 px-4"> 
-                <p className="text-lg text-gray-300 leading-relaxed mb-10">
+            <div className="max-w-2xl mx-auto text-center mt-10 px-4">
+                <p className="text-lg text-gray-300 leading-relaxed mb-6">
                     SRS AI is an intelligent tool that automatically generates a Software Requirements Specification (SRS) document for any given topic. It creates clear, well-structured, and correctly formatted SRS documents easily, saving time and ensuring accuracy in capturing all essential requirements.
                 </p>
+                <p className="text-lg text-gray-300 leading-relaxed">
+                    Whether you're a software developer, project manager, or student, SRS AI streamlines the documentation process by leveraging AI to understand project needs and deliver precise technical content — reducing manual effort and improving collaboration across teams.
+                </p>
             </div>
+
         </div>
     );
 } 
