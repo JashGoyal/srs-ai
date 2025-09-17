@@ -4,7 +4,7 @@ export default function Landing() {
     const navigate = useNavigate();
     return (
         <div>
-            <div className="text-center mt-36">
+            <div className="text-center mt-48">
                 <h1 className="text-4xl md:text-8xl mb-10">
                     Introducing SRSense
                 </h1>

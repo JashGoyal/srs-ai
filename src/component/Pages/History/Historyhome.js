@@ -8,7 +8,6 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import Toast from "../../Toast.js";
 import Loader from "../../Loader.js";
 
-
 export default function HistoryHome() {
   const dispatch = useDispatch();
   const { items: srsList, loading, error } = useSelector((state) => state.srsHistory);
@@ -33,7 +32,7 @@ export default function HistoryHome() {
   const handleDelete = (id) => {
     confirmAlert({
       title: "Confirm Deletion",
-      message: "Are you sure you want to delete this SRS document? ",
+      message: "Are you sure you want to delete this SRS document?",
       buttons: [
         {
           label: "Yes, Delete",
@@ -58,9 +57,8 @@ export default function HistoryHome() {
     }
   }, [error]);
 
-
   return (
-    <div className="min-h-screen bg-black p-8">
+    <div className="min-h-screen bg-black mt-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 flex flex-col items-center">
       {loading && <Loader />}
 
       {toast && (
@@ -71,8 +69,12 @@ export default function HistoryHome() {
         />
       )}
 
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {srsList.map((doc, index) => {
+      <h2 className="text-5xl sm:text-4xl font-bold text-white mb-8 text-center">
+        Previously Generated SRS
+      </h2>
+
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 max-w-7xl w-full justify-items-center">
+        {srsList.slice(0, 6).map((doc, index) => {
           const project = {
             ...doc.aiResponse,
             id: doc.id,
