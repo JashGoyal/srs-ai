@@ -20,6 +20,13 @@ export default function SideBar() {
     setIsOpen(true);
   };
 
+  // Function to close modal and refresh history
+  const handleCloseProject = () => {
+    setIsOpen(false);
+    setSelectedProject(null);
+    dispatch(fetchSrsHistory()); // Refresh SRS list on close
+  };
+
   const reversedSrsList = [...srsList].reverse();
 
   return (
@@ -64,7 +71,7 @@ export default function SideBar() {
       </div>
 
       {isOpen && selectedProject && (
-        <ViewProject project={selectedProject} setShow={setIsOpen} id={aiid} />
+        <ViewProject project={selectedProject} setShow={handleCloseProject} id={aiid} />
       )}
     </div>
   );

@@ -5,6 +5,7 @@ import { deleteSrsById } from "../../../redux/features/deleteSrsSlice.js";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import Toast from "../../Toast.js";
+import { fetchSrsHistory } from "../../../redux/features/GetHistory.js";
 
 export default function ViewProject({ project, setShow, id }) {
   const dispatch = useDispatch();
@@ -124,6 +125,7 @@ export default function ViewProject({ project, setShow, id }) {
                 const msg = typeof err === "string" ? err : err?.message || JSON.stringify(err);
                 setToast({ message: msg || "Failed to delete!", type: "error" });
               });
+            dispatch(fetchSrsHistory());
           },
         },
         { label: "Cancel" },
