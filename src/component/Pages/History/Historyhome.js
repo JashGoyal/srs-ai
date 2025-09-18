@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSrsHistory } from "../../../redux/features/GetHistory";
+import { fetchSrsHistory } from "../../../redux/features/GetHistory.js";
 import { deleteSrsById } from "../../../redux/features/deleteSrsSlice.js";
-import HistoryCard from "./Historycard";
+import HistoryCard from "./Historycard.js";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import Toast from "../../Toast.js";
 import Loader from "../../Loader.js";
 import { useNavigate } from "react-router-dom";
 
-export default function HistoryHome() {
+export default function Historyhome() {
   const dispatch = useDispatch();
   const { items: srsList, loading, error } = useSelector((state) => state.srsHistory);
   const { successMessage, errorMessage } = useSelector((state) => state.deleteSrs);

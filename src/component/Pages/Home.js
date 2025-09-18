@@ -1,4 +1,4 @@
-import HistoryHome from "./History/HistoryHome";
+import Historyhome from "./History/Historyhome";
 import Floatinginput from "./Home/Floatinginput";
 import Landing from "./Home/Landing";
 
@@ -10,7 +10,7 @@ function Home() {
 
             <Floatinginput />
 
-            <HistoryHome />
+            <Historyhome />
         </div>
     );
 }
