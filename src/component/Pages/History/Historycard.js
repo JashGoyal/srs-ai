@@ -116,6 +116,7 @@ export default function HistoryCard({ project, onDelete, date }) {
                 <button
                     onClick={() => setIsOpen(true)}
                     className="absolute top-1 right-3 p-2 rounded-full hover:bg-gray-100 text-gray-600 hover:text-gray-800 transition"
+                    title="View SRS"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 24 24"
@@ -153,6 +154,7 @@ export default function HistoryCard({ project, onDelete, date }) {
                     <button
                         onClick={onDelete}
                         className="text-red-600 hover:text-red-800 text-sm font-medium"
+                        title="Delete SRS"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"
@@ -178,6 +180,7 @@ export default function HistoryCard({ project, onDelete, date }) {
                     <button
                         onClick={handleDownload}
                         className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                        title="Download SRS"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"

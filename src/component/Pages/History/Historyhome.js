@@ -61,7 +61,6 @@ export default function HistoryHome() {
 
   return (
     <div className="min-h-screen bg-black mt-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 flex flex-col items-center">
-      {loading && <Loader />}
 
       {toast && (
         <Toast
@@ -83,6 +82,7 @@ export default function HistoryHome() {
         SRS
       </h2>
 
+      {loading && <Loader />}
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 max-w-7xl w-full justify-items-center">
         {srsList.slice(0, 6).map((doc, index) => {
           const project = {

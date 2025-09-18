@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import Toast from "../../Toast";
+import { useDispatch } from "react-redux";
+import { addMessage } from "../../../redux/features/Chatslice";
 import { useNavigate } from "react-router-dom";
 
 export default function Floatinginput() {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const [inputValue, setInputValue] = useState("");
     const [isFocused, setIsFocused] = useState(false);
     const [showUI, setShowUI] = useState(true);
@@ -25,24 +29,28 @@ export default function Floatinginput() {
     }, [lastScrollY]);
 
     const handleSubmit = (e) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    if (inputValue.trim() === "") {
-        setToast({ message: "⚠️ Input field is empty", type: "error" });
-        return;
-    }
+        if (inputValue.trim() === "") {
+            setToast({ message: "⚠️ Input field is empty", type: "error" });
+            return;
+        }
 
-    console.log("Dispatching:", inputValue);
+        console.log("Dispatching:", inputValue);
 
-    setToast({ message: "✅ Redirecting to chat...", type: "success" });
+        // 1️⃣ Add message into Redux chat state
+        dispatch(addMessage({ sender: "user", text: inputValue, replied: false }));
 
-    setInputValue("");
+        setToast({ message: "✅ Redirecting to chat...", type: "success" });
 
-    setTimeout(() => {
-       navigate("/chat", { state: { message: inputValue } });
-    }, 1500);
-};
+        const message = inputValue;
+        setInputValue("");
 
+        // 2️⃣ Navigate to chat after short delay
+        setTimeout(() => {
+            navigate("/chat", { state: { message } });
+        }, 1000);
+    };
 
     const handleInput = (e) => {
         e.target.style.height = "auto";
@@ -81,7 +89,7 @@ export default function Floatinginput() {
                             rows={1}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter" && !e.shiftKey) {
-                                    e.preventDefault(); 
+                                    e.preventDefault();
                                     handleSubmit(e);
                                 }
                             }}
