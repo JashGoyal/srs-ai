@@ -6,7 +6,7 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import Toast from "../../Toast.js";
 
-export default function ViewProject({ project, setShow }) {
+export default function ViewProject({ project, setShow, id }) {
   const dispatch = useDispatch();
   const sectionRefs = useRef([]);
   const [activeSection, setActiveSection] = useState(0);
@@ -104,6 +104,7 @@ export default function ViewProject({ project, setShow }) {
 
     doc.save(`${project.title || "SRS"}.pdf`);
   };
+  console.log("id :", id)
 
   const handleDelete = () => {
     confirmAlert({
@@ -113,14 +114,15 @@ export default function ViewProject({ project, setShow }) {
         {
           label: "Yes, Delete",
           onClick: () => {
-            dispatch(deleteSrsById(project.id))
+            dispatch(deleteSrsById(project.id || id))
               .unwrap()
               .then(() => {
                 setToast({ message: "Deleted successfully!", type: "success" });
                 setShow(false);
               })
               .catch((err) => {
-                setToast({ message: err || "Failed to delete!", type: "error" });
+                const msg = typeof err === "string" ? err : err?.message || JSON.stringify(err);
+                setToast({ message: msg || "Failed to delete!", type: "error" });
               });
           },
         },
@@ -132,6 +134,7 @@ export default function ViewProject({ project, setShow }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+
       <div className="relative w-4/5 h-4/5 bg-white rounded-2xl shadow-lg flex overflow-hidden">
         <button onClick={() => setShow(false)} className="absolute top-3 right-4 text-black font-bold text-2xl">✕</button>
 
@@ -140,15 +143,24 @@ export default function ViewProject({ project, setShow }) {
             <h2 className="text-xl font-bold text-white mb-4">{project.title}</h2>
             <ul className="space-y-2 text-sm">
               {project.sections?.map((section, i) => (
-                <li key={i} className={`cursor-pointer ${activeSection === i ? "text-white font-bold" : "text-gray-300 hover:text-white"}`} onClick={() => scrollToSection(i)}>
+                <li
+                  key={i}
+                  className={`cursor-pointer ${activeSection === i ? "text-white font-bold" : "text-gray-300 hover:text-white"}`}
+                  onClick={() => scrollToSection(i)}
+                >
                   {section.heading}
                 </li>
               ))}
             </ul>
           </div>
+
           <div className="flex flex-col space-y-3">
-            <button onClick={handleDownloadPDF} className="py-2 px-4 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">Download PDF</button>
-            <button onClick={handleDelete} className="py-2 px-4 bg-red-600 text-white text-sm rounded hover:bg-red-700">Delete SRS</button>
+            <button onClick={handleDownloadPDF} className="py-2 px-4 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+              Download PDF
+            </button>
+            <button onClick={handleDelete} className="py-2 px-4 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+              Delete SRS
+            </button>
           </div>
         </aside>
 

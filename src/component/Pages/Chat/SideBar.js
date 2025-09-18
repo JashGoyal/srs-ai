@@ -6,16 +6,17 @@ import ViewProject from "../History/ViewProject";
 export default function SideBar() {
   const dispatch = useDispatch();
   const { items: srsList = [] } = useSelector((state) => state.srsHistory || {});
-
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [aiid, setaiid] = useState();
 
   useEffect(() => {
     dispatch(fetchSrsHistory());
   }, [dispatch]);
 
-  const handleOpenProject = (project) => {
+  const handleOpenProject = (project, id) => {
     setSelectedProject(project);
+    setaiid(id);
     setIsOpen(true);
   };
 
@@ -38,7 +39,7 @@ export default function SideBar() {
                 key={doc.id}
                 className="group flex justify-between items-center p-2 rounded-lg hover:bg-gray-500 cursor-pointer transition-colors duration-200"
                 title={project?.title || "Untitled"}
-                onClick={() => handleOpenProject(project)}
+                onClick={() => handleOpenProject(project, doc.id)}
               >
                 <span className="truncate">{project?.title || "Untitled"}</span>
 
@@ -63,7 +64,7 @@ export default function SideBar() {
       </div>
 
       {isOpen && selectedProject && (
-        <ViewProject project={selectedProject} setShow={setIsOpen} />
+        <ViewProject project={selectedProject} setShow={setIsOpen} id={aiid} />
       )}
     </div>
   );
