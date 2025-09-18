@@ -56,7 +56,7 @@ export default function Syntax() {
               </div>
             </section>
 
-              <section>
+            <section>
               <h2 className="text-sm font-semibold text-blue-700 mb-1">4. External Interface Requirements</h2>
               <ul className="list-disc list-inside ml-3 space-y-1">
                 <li>User Interfaces</li>
@@ -65,10 +65,10 @@ export default function Syntax() {
                 <li>Communication Interfaces</li>
               </ul>
             </section>
-            
+
           </main>
           <footer className="border-t border-gray-300 pt-1 text-right text-xs text-gray-500">
-             Page 1 of 2
+            Page 1 of 2
           </footer>
         </div>
 
@@ -100,7 +100,7 @@ export default function Syntax() {
             </section>
           </main>
           <footer className="border-t border-gray-300 pt-1 text-right text-xs text-gray-500">
-             Page 2 of 2
+            Page 2 of 2
           </footer>
         </div>
       </div>

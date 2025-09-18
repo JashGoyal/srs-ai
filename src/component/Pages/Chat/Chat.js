@@ -12,12 +12,9 @@ export default function Chat() {
 
   return (
     <div className="flex h-screen bg-black text-white overflow-hidden">
-      {/* Sidebar */}
       <SideBar />
 
-      {/* Main Chat Area */}
       <div className="flex-1 relative flex flex-col h-full">
-        {/* Home Button */}
         <button
           onClick={goHome}
           aria-label="Go to Home"
@@ -39,7 +36,6 @@ export default function Chat() {
           </svg>
         </button>
 
-        {/* Message List */}
         <div className="flex-1 p-4 h-full">
           <MessageList />
         </div>

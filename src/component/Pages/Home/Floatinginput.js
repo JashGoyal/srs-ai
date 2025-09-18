@@ -38,7 +38,6 @@ export default function Floatinginput() {
 
         console.log("Dispatching:", inputValue);
 
-        // 1️⃣ Add message into Redux chat state
         dispatch(addMessage({ sender: "user", text: inputValue, replied: false }));
 
         setToast({ message: "✅ Redirecting to chat...", type: "success" });
@@ -46,7 +45,6 @@ export default function Floatinginput() {
         const message = inputValue;
         setInputValue("");
 
-        // 2️⃣ Navigate to chat after short delay
         setTimeout(() => {
             navigate("/chat", { state: { message } });
         }, 1000);

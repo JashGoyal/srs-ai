@@ -7,7 +7,6 @@ import Toast from "../../Toast";
 import ReactMarkdown from "react-markdown";
 import { fetchSrsHistory } from "../../../redux/features/GetHistory";
 
-// 🔹 Helper function to format AI JSON response into readable text
 function formatProjectToText(project) {
     if (!project || !project.sections) return "";
 
@@ -35,7 +34,6 @@ export default function MessageList() {
     const messages = useSelector((state) => state.chat.messages);
     const dispatch = useDispatch();
 
-    // Save state from redux slice
     const srsSaveState = useSelector((state) => state.srsSave);
 
     const [inputValue, setInputValue] = useState("");
@@ -51,7 +49,6 @@ export default function MessageList() {
     const noMessages = messages.length === 0;
     const processedUserMessageIds = useRef(new Set());
 
-    // Map to keep track of which AI messages have save button
     const [saveButtonsMap, setSaveButtonsMap] = useState({});
 
     const typeMessage = (fullText, messageId) => {
@@ -112,7 +109,6 @@ export default function MessageList() {
             for (const msg of unRepliedMessages) {
                 processedUserMessageIds.current.add(msg.id);
 
-                // 🔹 Add temporary AI loading bubble
                 const tempAiId = `ai-loading-${Date.now()}`;
                 dispatch(
                     addMessage({
@@ -149,7 +145,6 @@ export default function MessageList() {
 
                     const aiMessageId = `ai-${Date.now()}`;
 
-                    // 🔹 Replace temp loading bubble with real AI message
                     dispatch(updateMessage({ id: tempAiId, text: "", loading: false }));
 
                     dispatch(
@@ -189,7 +184,6 @@ export default function MessageList() {
         handleUnrepliedMessages();
     }, [messages, dispatch]);
 
-    // Handle save button click
     const handleSave = async (aiMessageId) => {
         const data = saveButtonsMap[aiMessageId];
         if (!data) {

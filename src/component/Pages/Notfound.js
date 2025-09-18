@@ -3,13 +3,11 @@ import React from "react";
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black p-6 text-center">
-      {/* Custom cut-circle SVG */}
       <svg
         className="w-64 h-64 mb-6"
         viewBox="0 0 200 200"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Cut-circle outline */}
         <path
           d="
             M 40 0
@@ -27,7 +25,6 @@ export default function NotFound() {
           stroke="#39FF14"
           strokeWidth="6"
         />
-        {/* 404 text */}
         <text
           x="50%"
           y="50%"
@@ -41,17 +38,14 @@ export default function NotFound() {
         </text>
       </svg>
 
-      {/* Heading */}
       <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
         Page Not Found
       </h1>
 
-      {/* Subtext */}
       <p className="text-lg md:text-xl text-[#39FF14]/80 mb-6">
         The page you are looking for doesn’t exist or has been moved.
       </p>
 
-      {/* Button */}
       <a
         href="/"
         className="px-6 py-3 bg-[#39FF14] text-black font-semibold rounded-full hover:scale-105 transition-transform duration-300"

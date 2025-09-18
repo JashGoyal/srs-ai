@@ -12,7 +12,6 @@ const chatSlice = createSlice({
         state.messages.push(action.payload);
       },
       prepare: (message) => {
-        // Attach a unique id to each message automatically
         return {
           payload: {
             id: nanoid(),

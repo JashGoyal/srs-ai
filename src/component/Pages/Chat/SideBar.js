@@ -19,17 +19,14 @@ export default function SideBar() {
     setIsOpen(true);
   };
 
-  // Reverse to show latest first
   const reversedSrsList = [...srsList].reverse();
 
   return (
     <div className="h-screen w-[250px] bg-[#1F1F1F] text-white flex flex-col shadow-lg">
-      {/* Header */}
       <div className="p-4 text-2xl font-semibold border-b border-gray-700">
         Saved SRS
       </div>
 
-      {/* Dynamic Topics */}
       <div className="flex-1 p-4 overflow-y-auto scrollbar-dark space-y-2">
         {reversedSrsList.length === 0 ? (
           <p className="text-gray-400 text-center">No SRS found</p>
@@ -45,7 +42,6 @@ export default function SideBar() {
               >
                 <span className="truncate">{project?.title || "Untitled"}</span>
 
-                {/* Hover SVG */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -66,7 +62,6 @@ export default function SideBar() {
         )}
       </div>
 
-      {/* ViewProject modal */}
       {isOpen && selectedProject && (
         <ViewProject project={selectedProject} setShow={setIsOpen} />
       )}

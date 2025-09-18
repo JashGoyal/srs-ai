@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_BASE_URL + '/getsrs';
+
 export const fetchSrsHistory = createAsyncThunk(
   'srs/fetchSrsHistory',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:8080/api/srs/getsrs');
+      const response = await axios.get(API_URL);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch");

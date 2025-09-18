@@ -1,14 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_API_BASE_URL + '/save';
+
 export const saveSrs = createAsyncThunk(
   "srsSave/saveSrs",
   async (srsJson, { rejectWithValue }) => {
     try {
-      // Wrap srsJson inside aiResponse key to match backend expectation
       const payload = { aiResponse: srsJson };
 
-      const response = await axios.post("http://localhost:8080/api/srs/save", payload);
+      const response = await axios.post(API_URL, payload);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);

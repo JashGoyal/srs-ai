@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const DELETE_URL = "http://localhost:8080/api/srs/delete";
+const DELETE_URL = process.env.REACT_APP_API_BASE_URL + '/delete';
 
 export const deleteSrsById = createAsyncThunk(
   'srs/deleteById',
