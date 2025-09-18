@@ -64,13 +64,16 @@ export default function History() {
         });
     };
 
-    const filteredSrsList = srsList.filter((doc) =>
-        doc.aiResponse?.title?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredSrsList = srsList
+        .filter((doc) =>
+            doc.aiResponse?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .sort((a, b) =>
+            (a.aiResponse?.title || "").localeCompare(b.aiResponse?.title || "")
+        );
 
     return (
         <div className="min-h-screen bg-black pt-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 flex flex-col items-center">
-            {loading && <Loader />}
 
             {toast && (
                 <Toast
@@ -80,7 +83,7 @@ export default function History() {
                 />
             )}
 
-            <h2 className="text-5xl sm:text-4xl font-bold text-white mb-8 text-center">
+            <h2 className="text-5xl sm:text-6xl font-bold text-white mb-8 text-center">
                 Previously Generated SRS
             </h2>
 
@@ -90,7 +93,8 @@ export default function History() {
                 placeholder="Search by project title..."
             />
 
-            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 max-w-7xl w-full justify-items-center mt-6">
+            {loading && <Loader />}
+            <div className="grid mt-12 gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 max-w-7xl w-full justify-items-center mt-6">
                 {filteredSrsList.length === 0 && !loading && (
                     <p className="text-gray-400 text-center w-full col-span-full">
                         No matching SRS history found.

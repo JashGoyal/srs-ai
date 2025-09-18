@@ -5,6 +5,7 @@ import { generateSrs } from "../../../redux/features/srsSlice";
 import { saveSrs, resetStatus } from "../../../redux/features/srsSaveSlice";
 import Toast from "../../Toast";
 import ReactMarkdown from "react-markdown";
+import { fetchSrsHistory } from "../../../redux/features/GetHistory";
 
 // 🔹 Helper function to format AI JSON response into readable text
 function formatProjectToText(project) {
@@ -198,6 +199,8 @@ export default function MessageList() {
 
         try {
             await dispatch(saveSrs(data.srsJson)).unwrap();
+            await dispatch(fetchSrsHistory());
+
             setToast({ message: "✅ SRS saved successfully!", type: "success" });
             dispatch(resetStatus());
         } catch (error) {
@@ -314,12 +317,11 @@ export default function MessageList() {
                     </h1>
 
                     <div
-                        className={`w-full max-w-2xl flex justify-center
-                                  transition-transform duration-[5000ms] ease-in-out
-                                  ${hasSentMessage
+                        className={`w-full max-w-2xl mx-auto px-4 flex justify-center
+              transition-transform duration-[5000ms] ease-in-out
+              ${hasSentMessage
                                 ? "fixed bottom-6 left-1/2 transform -translate-x-1/2 translate-y-0"
-                                : "relative translate-x-0 translate-y-0"
-                            }
+                                : "relative translate-x-0 translate-y-0"}
   `}
                     >
                         {inputForm}
@@ -348,7 +350,7 @@ export default function MessageList() {
                                     >
                                         <div
                                             className={`px-4 py-2 rounded-2xl break-words whitespace-pre-wrap relative
-                      ${msg.sender === "user"
+                                                    ${msg.sender === "user"
                                                     ? "bg-white text-black text-right max-w-[60%] ml-auto"
                                                     : "bg-black text-white text-left w-full"
                                                 }`}
@@ -412,11 +414,12 @@ export default function MessageList() {
                         <div ref={messagesEndRef} />
                     </div>
 
-                    <div
-                        className="w-full max-w-2xl px-4 flex justify-center z-50 fixed bottom-6 left-1/2 transform -translate-x-1/2"
-                    >
-                        {inputForm}
+                    <div className="absolute bottom-6 left-0 right-0 px-4 flex justify-center z-50">
+                        <div className="w-full max-w-2xl">
+                            {inputForm}
+                        </div>
                     </div>
+
                 </>
             )}
 

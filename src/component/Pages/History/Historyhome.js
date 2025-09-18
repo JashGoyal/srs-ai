@@ -84,21 +84,24 @@ export default function HistoryHome() {
 
       {loading && <Loader />}
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 max-w-7xl w-full justify-items-center">
-        {srsList.slice(0, 6).map((doc, index) => {
-          const project = {
-            ...doc.aiResponse,
-            id: doc.id,
-          };
+        {[...srsList]
+          .sort(() => Math.random() - 0.5) 
+          .slice(0, 6)
+          .map((doc, index) => {
+            const project = {
+              ...doc.aiResponse,
+              id: doc.id,
+            };
 
-          return (
-            <HistoryCard
-              key={doc.id || index}
-              project={project}
-              onDelete={() => handleDelete(doc.id)}
-              date={doc.createdAt}
-            />
-          );
-        })}
+            return (
+              <HistoryCard
+                key={doc.id || index}
+                project={project}
+                onDelete={() => handleDelete(doc.id)}
+                date={doc.createdAt}
+              />
+            );
+          })}
       </div>
     </div>
   );
