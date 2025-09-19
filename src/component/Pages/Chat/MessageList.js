@@ -136,9 +136,9 @@ export default function MessageList() {
 
                             aiText =
                                 `Here is the SRS for ${msg.text}\n\n` +
-                                `_____________________________________________________________`+
+                                `_____________________________________________________________\n\n`+
                                 formattedText +
-                                `_____________________________________________________________`+
+                                `\n\n_____________________________________________________________`+
                                 `\n\nIf you want to save this SRS, click the save icon.`;
                         } catch {
                             aiText = response?.srsData?.aiResponse || "⚠️ No AI response";
