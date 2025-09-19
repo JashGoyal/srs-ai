@@ -135,11 +135,11 @@ export default function MessageList() {
                             const formattedText = formatProjectToText(srsJson);
 
                             aiText =
-                                `Here is the SRS for "${msg.text}"<br /><br />` +
-                                `<hr />` +
+                                `Here is the SRS for ${msg.text}\n\n` +
+                                `_____________________________________________________________`+
                                 formattedText +
-                                `<hr /><br />` +
-                                `If you want to save this SRS, click the save icon.`
+                                `_____________________________________________________________`+
+                                `\n\nIf you want to save this SRS, click the save icon.`;
                         } catch {
                             aiText = response?.srsData?.aiResponse || "⚠️ No AI response";
                         }
