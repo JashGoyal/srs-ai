@@ -35,12 +35,10 @@ code {
   scrollbar-color: #555 transparent;
 }
 
-/* Dark overlay */
 .react-confirm-alert-overlay {
   background: rgba(0, 0, 0, 0.7) !important;
 }
 
-/* Dark modal box */
 .react-confirm-alert {
   background: #1e1e1e !important;
   color: #ffffff !important;
@@ -50,7 +48,6 @@ code {
   text-align: center;
 }
 
-/* Button base styles */
 .react-confirm-alert-button-group button {
   background: #333 !important;
   color: #fff !important;
@@ -62,12 +59,29 @@ code {
   font-weight: 600;
 }
 
-/* Yes (Delete) button */
 .react-confirm-alert-button-group button:first-child:hover {
   background: #28a745 !important; /* Green */
 }
 
-/* Cancel button */
 .react-confirm-alert-button-group button:last-child:hover {
   background: #dc3545 !important; /* Red */
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f1f1f;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 10px;
+  border: 2px solid #1f1f1f;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #888;
 }

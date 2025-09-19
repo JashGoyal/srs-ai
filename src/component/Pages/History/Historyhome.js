@@ -76,16 +76,24 @@ export default function Historyhome() {
           onClick={() => navigate("/history")}
           className="text-neon cursor-pointer hover:underline"
           title="Go to History"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              navigate("/history");
+            }
+          }}
         >
           Generated
-        </span>{" "}
+        </span>
+        {" "}
         SRS
       </h2>
 
       {loading && <Loader />}
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 max-w-7xl w-full justify-items-center">
         {[...srsList]
-          .sort(() => Math.random() - 0.5) 
+          .sort(() => Math.random() - 0.5)
           .slice(0, 6)
           .map((doc, index) => {
             const project = {

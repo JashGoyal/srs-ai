@@ -5,11 +5,10 @@ import Router from "./component/Route/Routes";
 
 function App() {
   const location = useLocation();
-
   const hideHeader = location.pathname === "/chat";
 
   return (
-    <div className="bg-black">
+    <div className="bg-black min-h-screen text-white overflow-y-auto">
       {!hideHeader && <Header />}
       <Router />
     </div>
