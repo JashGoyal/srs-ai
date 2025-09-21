@@ -127,7 +127,7 @@ export default function HistoryCard({ project, onDelete, date }) {
                     </svg>
                 </button>
 
-                <h2 className="text-lg font-bold text-gray-800 mb-2 pr-8">
+                <h2 className="text-lg font-bold text-gray-900 mb-2 pr-8">
                     {project.title}
                 </h2>
 
@@ -139,20 +139,26 @@ export default function HistoryCard({ project, onDelete, date }) {
                 </p>
 
                 <div className="bg-gray-100 rounded-lg p-3 border text-sm mb-4">
-    <p className="text-xs text-gray-500 font-semibold mb-1">✨ Key Feature:</p>
-    <p className="text-sm text-gray-900">
-        {Array.isArray(project.keyFeatures) && project.keyFeatures.length > 0
-            ? project.keyFeatures.join(", ")
-            : project.sections?.find(sec => sec.heading === "3. System Features")
-                ?.content?.[0]?.text}
-    </p>
-</div>
+                    <p className="text-xs text-gray-500 font-semibold mb-1">✨ Key Feature:</p>
+                    <p className="text-sm text-gray-900">
+                      {project.keyFeatures && project.keyFeatures.trim() !== "" ? (
+                            <div className="text-sm text-gray-900">
+                                {project.keyFeatures}
+                            </div>
+                        ) : (
+                            <p className="text-sm text-gray-900">
+                                {project.sections?.find(section => section.heading === "3. System Features")
+                                    ?.content?.[0]?.text || "No features available."}
+                            </p>
+                        )}
+                    </p>
+                </div>
 
                 <div />
-                <p className="text-xs text-gray-500 mb-2">
+                <p className="text-xs text-gray-500 mb-1">
                     <span className="text-gray-800 font-semibold">Created on:</span> {formattedDate}
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 mb-1">
                     <span className="text-gray-800 font-semibold">Format:</span> {project.format || "IEEE 830"}
                 </p>
 
