@@ -6,9 +6,9 @@ const API_URL = process.env.REACT_APP_API_BASE_URL + '/generate';
 
 export const generateSrs = createAsyncThunk(
   'srs/generateSrs',
-  async (prompt, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post(API_URL, { prompt });
+      const response = await axios.post(API_URL, data);
       return response.data;
     } catch (error) {
       console.error("SRS Thunk Error:", error);

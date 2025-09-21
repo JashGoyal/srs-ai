@@ -154,6 +154,9 @@ export default function ViewProject({ project, setShow, id }) {
                 </li>
               ))}
             </ul>
+            <p className="text-xs font-bold text-white mb-4 mt-4">
+              <span className="text-white font-semibold">Format: </span> {project.format || "IEEE 830"}
+            </p>
           </div>
 
           <div className="flex flex-col space-y-3">

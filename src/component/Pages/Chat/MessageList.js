@@ -10,7 +10,7 @@ import { fetchSrsHistory } from "../../../redux/features/GetHistory";
 function formatProjectToText(project) {
     if (!project || !project.sections) return "";
 
-    let result = project.title ? project.title + "\n\n" : "";
+    let result = project.title ? "In " + project.format + "\n\n" + project.title + "\n\n" : "";
 
     project.sections.forEach((section) => {
         if (section.heading) {
@@ -33,29 +33,83 @@ function formatProjectToText(project) {
 export default function MessageList() {
     const messages = useSelector((state) => state.chat.messages);
     const dispatch = useDispatch();
-
+    const [selectedFormat, setSelectedFormat] = useState("IEEE830");
     const srsSaveState = useSelector((state) => state.srsSave);
-
     const [inputValue, setInputValue] = useState("");
     const [toast, setToast] = useState(null);
     const [loading, setLoading] = useState(false);
     const [hasSentMessage, setHasSentMessage] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
-
     const isTypingRef = useRef(false);
     const messagesEndRef = useRef(null);
     const textareaRef = useRef(null);
-
     const noMessages = messages.length === 0;
     const processedUserMessageIds = useRef(new Set());
-
     const [saveButtonsMap, setSaveButtonsMap] = useState({});
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    const formatOptions = [
+        {
+            value: "IEEE830",
+            short: "IEEE 830",
+            full: "IEEE 830 Software Requirements Specification ⭐ Recommended",
+        },
+        {
+            value: "IEEE29148",
+            short: "IEEE 29148",
+            full: "IEEE 29148 System and Software Requirements Specification",
+        },
+        {
+            value: "Volere",
+            short: "Volere",
+            full: "Volere Requirements Specification",
+        },
+        {
+            value: "Agile",
+            short: "Agile",
+            full: "Agile User Story Based Requirements",
+        },
+        {
+            value: "ISO",
+            short: "ISO",
+            full: "ISO/IEC/IEEE Standard Requirements Specification",
+        },
+        {
+            value: "FURPS",
+            short: "FURPS",
+            full: "FURPS Model Requirements Specification",
+        },
+        {
+            value: "CMMI",
+            short: "CMMI",
+            full: "CMMI Requirements Management",
+        },
+        {
+            value: "BRD",
+            short: "BRD",
+            full: "Business Requirements Document (BRD)",
+        },
+    ];
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const typeMessage = (fullText, messageId) => {
         return new Promise((resolve) => {
             let index = 0;
-            const totalDuration = 100;
-            const minDelay = 5;
+            const totalDuration = 30;
+            const minDelay = 2;
             const delay = Math.max(totalDuration / fullText.length, minDelay);
 
             dispatch(updateMessage({ id: messageId, loading: false }));
@@ -121,7 +175,7 @@ export default function MessageList() {
                 );
 
                 try {
-                    const response = await dispatch(generateSrs(msg.text)).unwrap();
+                    const response = await dispatch(generateSrs({ prompt: msg.text, format: msg.format || "IEEE830" })).unwrap();
                     const isError = response?.status === "error";
 
                     let aiText = "";
@@ -136,9 +190,9 @@ export default function MessageList() {
 
                             aiText =
                                 `Here is the SRS for ${msg.text}\n\n` +
-                                `_____________________________________________________________\n\n`+
+                                `_____________________________________________________________\n\n` +
                                 formattedText +
-                                `\n\n_____________________________________________________________`+
+                                `\n\n_____________________________________________________________` +
                                 `\n\nIf you want to save this SRS, click the save icon.`;
                         } catch {
                             aiText = response?.srsData?.aiResponse || "⚠️ No AI response";
@@ -217,7 +271,7 @@ export default function MessageList() {
             return;
         }
 
-        dispatch(addMessage({ sender: "user", text, replied: false }));
+        dispatch(addMessage({ sender: "user", text, replied: false, format: selectedFormat }));
         setInputValue("");
         if (textareaRef.current) textareaRef.current.style.height = "auto";
         setHasSentMessage(true);
@@ -250,6 +304,53 @@ export default function MessageList() {
             className="relative flex justify-center w-full max-w-2xl"
         >
             <div className="relative bg-gray-800/90 backdrop-blur-md text-neon rounded-3xl border border-gray-600 shadow-lg flex items-center px-4 py-2 w-full">
+                <div className="relative mr-3" ref={dropdownRef}>
+                    <button
+                        type="button"
+                        onClick={() => setIsDropdownOpen((prev) => !prev)}
+                        className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white text-sm px-3 py-2 rounded-md shadow-sm transition duration-200 w-full"
+                    >
+                        <span className="truncate text-left">
+                            {
+                                formatOptions.find((f) => f.value === selectedFormat)[
+                                isDropdownOpen ? "full" : "short"
+                                ]
+                            }
+                        </span>
+                        <svg
+                            className={`w-4 h-4 ml-auto transform transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 9l-7 7-7-7"
+                            />
+                        </svg>
+                    </button>
+
+                    {isDropdownOpen && (
+                        <ul className="absolute bottom-full mb-1 w-[300px] left-0 z-50 bg-gray-900 border border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto">
+                            {formatOptions.map((option) => (
+                                <li
+                                    key={option.value}
+                                    onClick={() => {
+                                        setSelectedFormat(option.value);
+                                        setIsDropdownOpen(false);
+                                    }}
+                                    className={`px-4 py-2 text-sm text-white cursor-pointer hover:bg-gray-700 transition duration-150 ${option.value === selectedFormat ? "bg-gray-700 font-semibold" : ""
+                                        }`}
+                                >
+                                    {option.full}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+
                 <textarea
                     ref={textareaRef}
                     value={inputValue}

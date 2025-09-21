@@ -133,22 +133,29 @@ export default function HistoryCard({ project, onDelete, date }) {
 
                 <p className="text-sm text-gray-600 line-clamp-3 mb-3">
                     {
-                        project.sections?.find(sec => sec.heading === "1. Introduction")
-                            ?.content.find(item => item.subheading === "1.1 Purpose")?.text
+                        project.sections?.find(sec => sec.heading[0])
+                            ?.content.find(item => item.subheading[0])?.text
                     }
                 </p>
 
                 <div className="bg-gray-100 rounded-lg p-3 border text-sm mb-4">
-                    <p className="text-xs text-gray-500 font-semibold mb-1">✨ Key Feature:</p>
-                    <p className="text-gray-700">
-                        {project.sections?.find(sec => sec.heading === "3. System Features")
-                            ?.content[0]?.text}
-                    </p>
-                </div>
+    <p className="text-xs text-gray-500 font-semibold mb-1">✨ Key Feature:</p>
+    <p className="text-sm text-gray-900">
+        {Array.isArray(project.keyFeatures) && project.keyFeatures.length > 0
+            ? project.keyFeatures.join(", ")
+            : project.sections?.find(sec => sec.heading === "3. System Features")
+                ?.content?.[0]?.text}
+    </p>
+</div>
+
                 <div />
-                <p className="text-xs text-gray-500 mb-4">
-                    Created on: {formattedDate}
+                <p className="text-xs text-gray-500 mb-2">
+                    <span className="text-gray-800 font-semibold">Created on:</span> {formattedDate}
                 </p>
+                <p className="text-xs text-gray-500">
+                    <span className="text-gray-800 font-semibold">Format:</span> {project.format || "IEEE 830"}
+                </p>
+
 
                 <div className="mt-auto flex justify-between items-center border-t pt-3">
                     <button
