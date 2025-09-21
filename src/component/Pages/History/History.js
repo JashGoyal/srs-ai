@@ -150,6 +150,20 @@ export default function History() {
       />
 
       {loading && <Loader />}
+
+      {!loading && (
+        <div className="w-full max-w-7xl">
+          <p className="text-white mt-6 text-center">
+            {filteredSrsList.length === 1 ? 
+            <>
+              Total SRS Document: {filteredSrsList.length}
+            </> : <>
+              Total SRS Documents: {filteredSrsList.length}
+            </>}
+          </p>
+        </div>
+      )}
+
       <div className="grid pt-8 gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 max-w-7xl w-full justify-items-center mt-6">
         {filteredSrsList.length === 0 && !loading && (
           <p className="text-gray-400 text-center w-full col-span-full">
